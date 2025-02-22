@@ -1,35 +1,61 @@
 # RailsModelViz
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rails_model_viz`. To experiment with that code, run `bin/console` for an interactive prompt.
+RailsModelViz is a Rails engine (and optional rake task) that visualizes your ActiveRecord models and associations using Mermaid.js. It automatically generates diagrams of your models’relationships (and optionally columns) in a clear and interactive format.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+1. Add this line to your application’s Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+```ruby
+gem 'rails_model_viz'
+```
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+2. Then execute:
 
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```sh
+bundle install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+1. Mount the Rails Engine
 
-## Development
+In your main application’s config/routes.rb, mount the engine so you can access the visualization:
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+Rails.application.routes.draw do
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+  # Other routes...
+  if Rails.env.development?
+    mount RailsModelViz::Engine, at: '/rails_model_viz'
+  end
+end
+```
+
+After this, start your Rails server and navigate to:
+
+http://localhost:3000/rails_model_viz
+
+You should see a Mermaid-based diagram of your models’ relationships.
+
+![relations](docs/img/relations.png)
+
+2. Toggle Columns View
+
+By default, RailsModelViz may show only associations. If you’d like to view columns as well, you can pass a mode=columns parameter. For example:
+
+http://localhost:3000/rails_model_viz?mode=columns
+
+This will enrich each entity in the diagram with column names (and types).
+
+![columns](docs/img/columns.png)
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rails_model_viz.
+Bug reports and pull requests are welcome on GitHub at https://github.com/PeterTakahashi/rails_model_viz. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the Contributor Covenant code of conduct.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the MIT License.
+
+Feel free to add more sections (e.g., advanced configuration, known issues, screenshots, etc.) as you see fit!
